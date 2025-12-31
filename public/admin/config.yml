@@ -1,0 +1,70 @@
+
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "services"
+    label: "Services"
+    folder: "public/content/services"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Icon Name", name: "icon", widget: "select", options: ["Target", "Users", "Search", "TrendingUp", "Award", "Lightbulb"] }
+      - { label: "Short Description", name: "description", widget: "text" }
+      - { label: "Long Description", name: "longDescription", widget: "markdown" }
+
+  - name: "courses"
+    label: "Courses"
+    folder: "public/content/courses"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Thumbnail Image", name: "image", widget: "image" }
+      - { label: "Duration", name: "duration", widget: "string" }
+      - { label: "Price (NGN)", name: "price", widget: "number", value_type: "int" }
+      - { label: "Type", name: "type", widget: "select", options: ["free", "paid"] }
+      - { label: "Short Description", name: "description", widget: "text" }
+
+  - name: "events"
+    label: "Events"
+    folder: "public/content/events"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Event Type", name: "type", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["masterclass", "corporate", "activity"] }
+      - { label: "Feature Image", name: "image", widget: "image" }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "public/content/blog"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Feature Image", name: "image", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "cases"
+    label: "Case Studies"
+    folder: "public/content/cases"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Client Name", name: "client", widget: "string" }
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Metric/Result", name: "metric", widget: "string" }
+      - { label: "Feature Image", name: "image", widget: "image" }
