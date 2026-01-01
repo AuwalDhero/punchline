@@ -1,3 +1,9 @@
+---
+client: Auwal Yunusa
+title: Bussiness
+metric: design tinking
+image: /uploads/31.12.2025_13.06.15_rec.png
+---
 
 ---
 client: "Heritage Foods"
