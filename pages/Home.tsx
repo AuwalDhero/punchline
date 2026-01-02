@@ -1,12 +1,18 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, TrendingUp, Globe, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, TrendingUp, ChevronRight } from 'lucide-react';
 import FadeIn from '../components/FadeIn';
 import StatsSection from '../components/StatsSection';
 import { ICON_MAP } from '../constants';
 
 const Home: React.FC = () => {
+  const partners = [
+    { src: '/uploads/startup-kano.png', alt: 'Startup Kano Center for Innovation Development' },
+    { src: '/uploads/fantel-business-school.jpg', alt: 'Fantel Business School' },
+    { src: '/uploads/northino.jpg', alt: 'Northino' },
+    { src: '/uploads/spark-lab.png', alt: 'Spark Lab Creativity & Innovation Hub' },
+  ];
+
   return (
     <div className="pt-20">
       {/* Hero Section */}
@@ -102,25 +108,35 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-      
-      {/* Trust Bar */}
-      <section className="bg-white py-12 border-y border-gray-100 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 text-center mb-8">
+
+      {/* Trust Bar – Now loads perfectly with your exact file names & extensions */}
+      <section className="bg-white py-20 border-y border-gray-100 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 text-center mb-10">
           <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Global Standards, Local Expertise</p>
         </div>
-        <div className="flex space-x-20 animate-marquee whitespace-nowrap">
-           {[1,2,3,4,5,6,7,8].map(i => (
-             <div key={i} className="flex items-center justify-center space-x-2 text-gray-400 font-bold text-2xl grayscale hover:grayscale-0 transition-all">
-               <Globe className="w-8 h-8" />
-               <span>BRAND_PARTNER_{i}</span>
-             </div>
-           ))}
+        <div className="flex space-x-48 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
+          {[...partners, ...partners].map((partner, i) => (
+            <div key={i} className="flex-shrink-0">
+              <img
+                src={partner.src}
+                alt={partner.alt}
+                className="h-32 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500"
+              />
+            </div>
+          ))}
         </div>
       </section>
-      
+
       <style>{`
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { display: flex; width: 200%; animation: marquee 20s linear infinite; }
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          display: flex;
+          width: 200%;
+          animation: marquee 5s linear infinite;
+        }
       `}</style>
     </div>
   );

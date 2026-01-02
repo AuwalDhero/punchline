@@ -36,56 +36,17 @@ export const ICON_MAP: Record<string, React.ReactNode> = {
 
 /* ---------------- LOGO (UI COMPONENT) ---------------- */
 
-export const PMH_LOGO = (className = "h-8 w-auto") => (
-  <svg
-    viewBox="0 0 400 120"
+/* ---------------- LOGO (UI COMPONENT) ---------------- */
+
+export const PMH_LOGO = (className = 'h-8 w-auto') => (
+  <img
+    src="/uploads/logo.png"
+    alt="Punchline Marketing Hub Logo"
     className={className}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-label="Punchline Marketing Hub Logo"
-  >
-    <path
-      d="M20 30L55 15L90 30V65C90 85 55 105 55 105C55 105 20 85 20 65V30Z"
-      stroke="#0B56C6"
-      strokeWidth="6"
-    />
-    <text
-      x="35"
-      y="65"
-      fill="#0B56C6"
-      fontFamily="Montserrat"
-      fontWeight="800"
-      fontSize="24"
-    >
-      PM
-    </text>
-    <path
-      d="M30 80H80M30 90H60"
-      stroke="#0B56C6"
-      strokeWidth="4"
-    />
-    <text
-      x="110"
-      y="55"
-      fill="#000000"
-      fontFamily="Montserrat"
-      fontWeight="800"
-      fontSize="32"
-    >
-      PUNCHLINE
-    </text>
-    <text
-      x="110"
-      y="85"
-      fill="#000000"
-      fontFamily="Montserrat"
-      fontWeight="800"
-      fontSize="32"
-    >
-      MARKETING HUB
-    </text>
-  </svg>
+    loading="lazy"
+  />
 );
+
 
 /* ---------------- UI METRICS (STATIC / NON-CMS) ---------------- */
 

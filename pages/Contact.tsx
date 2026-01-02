@@ -54,7 +54,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Email Us</p>
-                      <p className="text-xl font-bold">hello@punchlinehub.com</p>
+                      <p className="text-xl font-bold">Punchlinemarketinghub@gmail.com</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
@@ -63,7 +63,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Call Directly</p>
-                      <p className="text-xl font-bold">+234 800 PUNCHLINE</p>
+                      <p className="text-xl font-bold">+234 813 875 1002</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
@@ -72,7 +72,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Lagos HQ</p>
-                      <p className="text-xl font-bold">Victoria Island, Lagos, Nigeria</p>
+                      <p className="text-xl font-bold">BUK Road, Kano, Nigeria</p>
                     </div>
                   </div>
                 </div>

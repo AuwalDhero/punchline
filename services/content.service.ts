@@ -1,4 +1,4 @@
-
+import matter from 'gray-matter';
 import { Service, Course, PMHEvent, BlogPost } from '../types';
 
 export interface CaseStudy {
@@ -9,76 +9,80 @@ export interface CaseStudy {
   image: string;
 }
 
+/* ------------------------------
+   VITE BUILD-TIME IMPORTS
+-------------------------------- */
+
+const serviceFiles = import.meta.glob('/content/services/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const courseFiles = import.meta.glob('/content/courses/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const eventFiles = import.meta.glob('/content/events/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const blogFiles = import.meta.glob('/content/blog/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+const caseFiles = import.meta.glob('/content/cases/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+/* ------------------------------
+   GENERIC PARSER
+-------------------------------- */
+
+function parseCollection<T>(files: Record<string, string>): T[] {
+  return Object.entries(files).map(([path, raw]) => {
+    const { data, content } = matter(raw);
+    const id = path.split('/').pop()?.replace('.md', '') || '';
+
+    return {
+      id,
+      ...data,
+      body: content,
+    } as T;
+  });
+}
+
+/* ------------------------------
+   CONTENT SERVICE
+-------------------------------- */
+
 class ContentService {
-  /**
-   * Defensive Markdown Parser
-   * Extracts frontmatter and body with safety checks for Netlify CMS fields.
-   */
-  private parseMarkdown(md: string, id: string): any {
-    const frontmatterRegex = /^---\s*([\s\S]*?)\s*---/;
-    const match = md.match(frontmatterRegex);
-    const data: any = { id, body: '' };
-
-    if (match) {
-      const yaml = match[1];
-      yaml.split('\n').forEach(line => {
-        const separatorIndex = line.indexOf(':');
-        if (separatorIndex !== -1) {
-          const key = line.slice(0, separatorIndex).trim();
-          let value = line.slice(separatorIndex + 1).trim();
-          
-          // Basic clean up of quotes
-          value = value.replace(/^["'](.*)["']$/, '$1');
-          
-          // Type coercion
-          if (value === 'true') data[key] = true;
-          else if (value === 'false') data[key] = false;
-          else if (!isNaN(value as any) && value !== '') data[key] = Number(value);
-          else data[key] = value;
-        }
-      });
-      data.body = md.replace(frontmatterRegex, '').trim();
-    }
-    return data;
-  }
-
-  private async fetchCollection<T>(folder: string, files: string[]): Promise<T[]> {
-    try {
-      const results = await Promise.all(
-        files.map(async (file) => {
-          // Normalizing to lowercase for Linux-based Netlify environments
-          const path = `/content/${folder.toLowerCase()}/${file.toLowerCase()}.md`;
-          const response = await fetch(path);
-          if (!response.ok) return null;
-          const text = await response.text();
-          return this.parseMarkdown(text, file) as T;
-        })
-      );
-      return results.filter(item => item !== null) as T[];
-    } catch (e) {
-      console.error(`Build-time fetch failed for collection: ${folder}`, e);
-      return [];
-    }
-  }
-
   async getServices(): Promise<Service[]> {
-    return this.fetchCollection<Service>('services', ['consultancy', 'training', 'research']);
+    return parseCollection<Service>(serviceFiles);
   }
 
   async getCourses(): Promise<Course[]> {
-    return this.fetchCollection<Course>('courses', ['sales-mastery', 'growth-marketing', 'leadership-exec', 'cx-protocol']);
+    return parseCollection<Course>(courseFiles);
   }
 
   async getEvents(): Promise<PMHEvent[]> {
-    return this.fetchCollection<PMHEvent>('events', ['q4-intensive', 'consumer-psychology', 'high-ticket-closing']);
+    return parseCollection<PMHEvent>(eventFiles);
   }
 
   async getBlogPosts(): Promise<BlogPost[]> {
-    return this.fetchCollection<BlogPost>('blog', ['lagos-consumer-landscape', 'sales-techniques-nigeria', 'digital-ads-lagos']);
+    return parseCollection<BlogPost>(blogFiles);
   }
 
   async getCaseStudies(): Promise<CaseStudy[]> {
-    return this.fetchCollection<CaseStudy>('cases', ['heritage-foods', 'swiftpay-africa', 'zest-beverages']);
+    return parseCollection<CaseStudy>(caseFiles);
   }
 }
 
