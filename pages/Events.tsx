@@ -18,6 +18,15 @@ export interface PMHEvent {
 }
 
 /* ---------------------------------------------
+   NORMALIZE CMS IMAGE PATHS
+--------------------------------------------- */
+const normalizeImage = (image?: string | null): string | null => {
+  if (!image) return null;
+  if (image.startsWith('http')) return image;
+  return image.startsWith('/') ? image : `/${image}`;
+};
+
+/* ---------------------------------------------
    BUILD-TIME CMS IMPORT (VITE SAFE)
 --------------------------------------------- */
 const eventFiles = import.meta.glob('/content/events/*.md', {
@@ -43,7 +52,7 @@ const events: PMHEvent[] = Object.entries(eventFiles)
       date: data.date ?? '',
       location: data.location ?? '',
       category: data.category ?? 'activity',
-      image: data.image ?? null,
+      image: normalizeImage(data.image),
     };
   })
   // newest first
@@ -96,6 +105,19 @@ const Events: React.FC = () => {
               {masterclasses.map((event, idx) => (
                 <FadeIn key={event.id} delay={idx * 0.1}>
                   <div className="bg-punchline-light p-8 rounded-[2rem] border border-gray-100 h-full hover:shadow-xl transition-all flex flex-col">
+                    
+                    {/* IMAGE */}
+                    {event.image && (
+                      <div className="mb-6 rounded-2xl overflow-hidden aspect-video bg-gray-100">
+                        <img
+                          src={event.image}
+                          alt={event.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+
                     <div className="text-punchline-blue font-black uppercase text-xs tracking-widest mb-4 flex items-center">
                       <Award size={16} className="mr-2" />
                       {event.type}
