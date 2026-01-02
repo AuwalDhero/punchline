@@ -1,4 +1,3 @@
-
 backend:
   name: git-gateway
   branch: main
@@ -9,7 +8,7 @@ public_folder: "/uploads"
 collections:
   - name: "services"
     label: "Services"
-    folder: "public/content/services"
+    folder: "content/services"
     create: true
     slug: "{{slug}}"
     fields:
@@ -20,7 +19,7 @@ collections:
 
   - name: "courses"
     label: "Courses"
-    folder: "public/content/courses"
+    folder: "content/courses"
     create: true
     slug: "{{slug}}"
     fields:
@@ -34,7 +33,7 @@ collections:
 
   - name: "events"
     label: "Events"
-    folder: "public/content/events"
+    folder: "content/events"
     create: true
     slug: "{{slug}}"
     fields:
@@ -47,7 +46,7 @@ collections:
 
   - name: "blog"
     label: "Blog Posts"
-    folder: "public/content/blog"
+    folder: "content/blog"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
@@ -60,7 +59,7 @@ collections:
 
   - name: "cases"
     label: "Case Studies"
-    folder: "public/content/cases"
+    folder: "content/cases"
     create: true
     slug: "{{slug}}"
     fields:

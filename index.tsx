@@ -1,12 +1,8 @@
+import './polyfills'; // 🚨 MUST BE FIRST IMPORT
 
-
-import { Buffer } from 'buffer';
-(window as any).Buffer = Buffer;
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './polyfills';
-
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

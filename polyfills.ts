@@ -1,5 +1,4 @@
 import { Buffer } from 'buffer';
 
-if (!(window as any).Buffer) {
-  (window as any).Buffer = Buffer;
-}
+(window as any).Buffer = Buffer;
+(globalThis as any).Buffer = Buffer;

@@ -6,12 +6,27 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
 
   return {
+    plugins: [react()],
+
     server: {
       port: 3000,
-      host: '0.0.0.0',
+      strictPort: true,
+      host: 'localhost', // 🔥 FIX: avoid HMR confusion
+      hmr: {
+        protocol: 'ws',
+        host: 'localhost',
+        port: 3000,
+      },
     },
 
-    plugins: [react()],
+    /**
+     * 🔹 PREVENT VITE FROM SCANNING CMS admin/index.html
+     */
+    build: {
+      rollupOptions: {
+        input: '/index.html',
+      },
+    },
 
     /**
      * 🔹 ENV VARIABLES (Gemini / AI)
@@ -28,7 +43,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
-        buffer: 'buffer', // ✅ REQUIRED for gray-matter
+        buffer: 'buffer',
       },
     },
   };

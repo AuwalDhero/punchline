@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import FadeIn from '../components/FadeIn';
 import { ArrowRight } from 'lucide-react';
 import matter from 'gray-matter';
 import { BlogPost } from '../types';
 
 /**
- * 🔹 BUILD-TIME FILE IMPORT
+ * 🔹 BUILD-TIME FILE IMPORT (STATIC)
  */
 const blogFiles = import.meta.glob('/content/blog/*.md', {
   eager: true,
@@ -13,35 +13,33 @@ const blogFiles = import.meta.glob('/content/blog/*.md', {
   import: 'default',
 }) as Record<string, string>;
 
+/**
+ * 🔹 PARSE POSTS AT BUILD TIME
+ */
+const posts: BlogPost[] = Object.entries(blogFiles)
+  .map(([path, raw]) => {
+    const { data, content } = matter(raw);
+
+    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+
+    return {
+      id: slug,
+      slug,
+      title: data.title ?? '',
+      excerpt: data.excerpt ?? '',
+      date: data.date ?? '',
+      image: data.image ?? null,
+      category: data.category ?? '',
+      body: content,
+    };
+  })
+  // 🔥 SORT: newest first
+  .sort((a, b) => {
+    if (!a.date || !b.date) return 0;
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
+
 const Blog: React.FC = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-
-  /**
-   * 🔹 SAFE gray-matter EXECUTION
-   */
-  useEffect(() => {
-    const parsedPosts: BlogPost[] = Object.entries(blogFiles).map(
-      ([path, raw]) => {
-        const { data, content } = matter(raw);
-
-        const slug = path.split('/').pop()?.replace('.md', '') ?? '';
-
-        return {
-          id: slug,
-          slug,
-          title: data.title ?? '',
-          excerpt: data.excerpt ?? '',
-          date: data.date ?? '',
-          image: data.image ?? null, // IMPORTANT
-          category: data.category ?? '',
-          body: content,
-        };
-      }
-    );
-
-    setPosts(parsedPosts);
-  }, []);
-
   return (
     <div className="pt-20">
       {/* HERO */}
@@ -63,14 +61,14 @@ const Blog: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {posts.length === 0 ? (
             <div className="text-center text-punchline-gray font-bold">
-              Loading insights…
+              No posts published yet.
             </div>
           ) : (
             <div className="grid lg:grid-cols-3 gap-12">
               {posts.map((post, idx) => (
                 <FadeIn key={post.id} delay={idx * 0.1}>
                   <article className="group cursor-pointer">
-                    {/* IMAGE (SAFE) */}
+                    {/* IMAGE */}
                     <div className="aspect-video bg-gray-100 rounded-3xl overflow-hidden mb-6">
                       {post.image ? (
                         <img
