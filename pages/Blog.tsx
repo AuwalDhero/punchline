@@ -1,41 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FadeIn from '../components/FadeIn';
 import { ArrowRight } from 'lucide-react';
 import matter from 'gray-matter';
 import { BlogPost } from '../types';
 
-const blogFiles = import.meta.glob<string>(
-  '/content/blog/*.md',
-  {
-    eager: true,
-    query: '?raw',
-    import: 'default'
-  }
-);
-
-
-
-const posts: BlogPost[] = Object.entries(blogFiles).map(([path, raw]) => {
-  const { data, content } = matter(raw);
-
-  const slug = path.split('/').pop()?.replace('.md', '') ?? '';
-
-  return {
-    id: slug,
-    slug,
-    title: data.title,
-    excerpt: data.excerpt,
-    date: data.date,
-    image: data.image,
-    category: data.category,
-    body: content, // ✅ REQUIRED BY BlogPost
-  };
-});
-
+/**
+ * 🔹 BUILD-TIME FILE IMPORT
+ */
+const blogFiles = import.meta.glob('/content/blog/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
 
 const Blog: React.FC = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+
+  /**
+   * 🔹 SAFE gray-matter EXECUTION
+   */
+  useEffect(() => {
+    const parsedPosts: BlogPost[] = Object.entries(blogFiles).map(
+      ([path, raw]) => {
+        const { data, content } = matter(raw);
+
+        const slug = path.split('/').pop()?.replace('.md', '') ?? '';
+
+        return {
+          id: slug,
+          slug,
+          title: data.title ?? '',
+          excerpt: data.excerpt ?? '',
+          date: data.date ?? '',
+          image: data.image ?? null, // IMPORTANT
+          category: data.category ?? '',
+          body: content,
+        };
+      }
+    );
+
+    setPosts(parsedPosts);
+  }, []);
+
   return (
     <div className="pt-20">
+      {/* HERO */}
       <section className="bg-punchline-light py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn className="max-w-3xl">
@@ -43,54 +52,71 @@ const Blog: React.FC = () => {
               Insights & <span className="text-punchline-blue">Knowledge</span>
             </h1>
             <p className="text-xl text-punchline-gray leading-relaxed">
-              CMS-powered thought leadership on the sales and marketing trends in Africa.
+              CMS-powered thought leadership on sales and marketing trends in Africa.
             </p>
           </FadeIn>
         </div>
       </section>
 
+      {/* BLOG GRID */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {posts.map((post, idx) => (
-              <FadeIn key={post.id} delay={idx * 0.1}>
-                <article className="group cursor-pointer">
-                  <div className="aspect-video bg-gray-100 rounded-3xl overflow-hidden mb-6">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-4 text-xs font-black uppercase tracking-widest text-punchline-blue">
-                      <span>{post.category}</span>
-                      <span className="text-gray-300">•</span>
-                      <span className="text-gray-400">
-                        {new Date(post.date).toLocaleDateString()}
-                      </span>
+          {posts.length === 0 ? (
+            <div className="text-center text-punchline-gray font-bold">
+              Loading insights…
+            </div>
+          ) : (
+            <div className="grid lg:grid-cols-3 gap-12">
+              {posts.map((post, idx) => (
+                <FadeIn key={post.id} delay={idx * 0.1}>
+                  <article className="group cursor-pointer">
+                    {/* IMAGE (SAFE) */}
+                    <div className="aspect-video bg-gray-100 rounded-3xl overflow-hidden mb-6">
+                      {post.image ? (
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 font-bold">
+                          No Image
+                        </div>
+                      )}
                     </div>
 
-                    <h2 className="text-2xl font-bold font-heading text-punchline-black group-hover:text-punchline-blue transition-colors leading-tight">
-                      {post.title}
-                    </h2>
+                    {/* CONTENT */}
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-4 text-xs font-black uppercase tracking-widest text-punchline-blue">
+                        <span>{post.category}</span>
+                        <span className="text-gray-300">•</span>
+                        <span className="text-gray-400">
+                          {post.date
+                            ? new Date(post.date).toLocaleDateString()
+                            : ''}
+                        </span>
+                      </div>
 
-                    <p className="text-punchline-gray leading-relaxed">
-                      {post.excerpt}
-                    </p>
+                      <h2 className="text-2xl font-bold font-heading text-punchline-black group-hover:text-punchline-blue transition-colors leading-tight">
+                        {post.title}
+                      </h2>
 
-                    <div className="pt-2">
-                      <button className="flex items-center space-x-2 font-bold text-punchline-black group-hover:translate-x-2 transition-transform">
-                        <span>Read Article</span>
-                        <ArrowRight size={18} className="text-punchline-blue" />
-                      </button>
+                      <p className="text-punchline-gray leading-relaxed">
+                        {post.excerpt}
+                      </p>
+
+                      <div className="pt-2">
+                        <button className="flex items-center space-x-2 font-bold text-punchline-black group-hover:translate-x-2 transition-transform">
+                          <span>Read Article</span>
+                          <ArrowRight size={18} className="text-punchline-blue" />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </FadeIn>
-            ))}
-          </div>
+                  </article>
+                </FadeIn>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
