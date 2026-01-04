@@ -1,5 +1,5 @@
 ---
-title: Sates Marketing For Techies
+title: Sales Marketing For Techies
 type: Physical
 date: 2026-01-31T08:20:00.000+01:00
 location: Startup Kano Hub
