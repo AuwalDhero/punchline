@@ -61,13 +61,15 @@ export interface PMHEvent {
 
 export interface BlogPost {
   id: string;
+  slug: string;        // ✅ REQUIRED (fixes slug error)
   title: string;
-  date: string;
-  category: string;
   excerpt: string;
-  image: string;
-  body: string;
+  date: string;
+  image: string | null;
+  category: string;
+  body: string;        // ✅ REQUIRED (Markdown content)
 }
+
 
 export interface GlobalConfig {
   siteName: string;

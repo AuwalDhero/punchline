@@ -24,12 +24,20 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
+
       - { label: "Category", name: "category", widget: "string" }
+
       - { label: "Thumbnail Image", name: "image", widget: "image" }
+
       - { label: "Duration", name: "duration", widget: "string" }
-      - { label: "Price (NGN)", name: "price", widget: "number", value_type: "int" }
+
+      - { label: "Price (NGN)", name: "price", widget: "number", value_type: "int", required: false }
+
       - { label: "Type", name: "type", widget: "select", options: ["free", "paid"] }
+
       - { label: "Short Description", name: "description", widget: "text" }
+
+      - { label: "Registration Link", name: "registrationLink", widget: "string", hint: "External signup URL (Google Form, LMS, Paystack, etc.)" }
 
   - name: "events"
     label: "Events"
@@ -38,10 +46,21 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
+
       - { label: "Event Type", name: "type", widget: "string" }
+
+      - { label: "Event Access", name: "access", widget: "select", options: ["free", "paid"] }
+
+      - { label: "Price (NGN)", name: "price", widget: "number", value_type: "int", required: false }
+
       - { label: "Date", name: "date", widget: "datetime" }
+
       - { label: "Location", name: "location", widget: "string" }
+
       - { label: "Category", name: "category", widget: "select", options: ["masterclass", "corporate", "activity"] }
+
+      - { label: "Registration Link", name: "registrationLink", widget: "string", hint: "External signup URL" }
+
       - { label: "Feature Image", name: "image", widget: "image" }
 
   - name: "blog"

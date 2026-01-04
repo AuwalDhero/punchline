@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FadeIn from '../components/FadeIn';
-import { Clock, BookOpen, Filter } from 'lucide-react';
+import { Clock, BookOpen, Filter, ExternalLink } from 'lucide-react';
 import matter from 'gray-matter';
 
 /* ---------------------------------------------
@@ -16,6 +16,7 @@ export interface Course {
   price: number;
   type: 'free' | 'paid';
   description: string;
+  registrationLink?: string;
 }
 
 /* ---------------------------------------------
@@ -32,7 +33,6 @@ const courseFiles = import.meta.glob('/content/courses/*.md', {
 --------------------------------------------- */
 const courses: Course[] = Object.entries(courseFiles).map(([path, raw]) => {
   const { data } = matter(raw);
-
   const slug = path.split('/').pop()?.replace('.md', '') ?? '';
 
   return {
@@ -45,6 +45,7 @@ const courses: Course[] = Object.entries(courseFiles).map(([path, raw]) => {
     price: typeof data.price === 'number' ? data.price : 0,
     type: data.type === 'paid' ? 'paid' : 'free',
     description: data.description ?? '',
+    registrationLink: data.registrationLink,
   };
 });
 
@@ -62,13 +63,13 @@ const Courses: React.FC = () => {
     <div className="pt-20">
       {/* HERO */}
       <section className="bg-punchline-blue text-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 text-center">
           <FadeIn>
-            <h1 className="text-5xl md:text-7xl font-black font-heading mb-6">
+            <h1 className="text-5xl md:text-7xl font-black mb-6">
               Master Your Craft
             </h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Dynamic courses managed via PMH CMS. Practical education for the African professional.
+              Practical courses managed via PMH CMS.
             </p>
           </FadeIn>
         </div>
@@ -76,22 +77,22 @@ const Courses: React.FC = () => {
 
       {/* COURSE LIST */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4">
           {/* FILTER */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <h2 className="text-2xl font-bold font-heading text-punchline-black flex items-center gap-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2">
               <Filter className="text-punchline-blue" /> Browse Our Catalog
             </h2>
 
-            <div className="flex bg-punchline-light p-1 rounded-full border border-gray-200">
+            <div className="flex bg-punchline-light p-1 rounded-full border">
               {(['all', 'free', 'paid'] as const).map(type => (
                 <button
                   key={type}
                   onClick={() => setFilter(type)}
-                  className={`px-8 py-2 rounded-full font-bold text-sm capitalize transition-all ${
+                  className={`px-8 py-2 rounded-full font-bold capitalize transition ${
                     filter === type
-                      ? 'bg-punchline-blue text-white shadow-md'
-                      : 'text-punchline-gray hover:text-punchline-blue'
+                      ? 'bg-punchline-blue text-white'
+                      : 'text-punchline-gray'
                   }`}
                 >
                   {type}
@@ -109,31 +110,28 @@ const Courses: React.FC = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredCourses.map((course, idx) => (
                 <FadeIn key={course.id} delay={idx * 0.1}>
-                  <div className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div className="bg-white rounded-3xl border shadow-sm hover:shadow-xl flex flex-col h-full">
                     {/* IMAGE */}
-                    <div className="relative aspect-video overflow-hidden">
+                    <div className="aspect-video overflow-hidden">
                       <img
                         src={
                           course.image ||
                           'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800'
                         }
                         alt={course.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover"
                       />
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-black text-punchline-blue uppercase tracking-widest shadow-sm">
-                        {course.category}
-                      </div>
                     </div>
 
                     {/* CONTENT */}
-                    <div className="p-8 flex-grow flex flex-col">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center text-punchline-blue text-sm font-bold">
+                    <div className="p-8 flex flex-col flex-grow">
+                      <div className="flex justify-between mb-4">
+                        <div className="flex items-center text-sm font-bold text-punchline-blue">
                           <Clock size={16} className="mr-1" />
                           {course.duration}
                         </div>
 
-                        <div
+                        <span
                           className={`px-3 py-1 rounded-lg font-black text-sm ${
                             course.type === 'free'
                               ? 'bg-green-100 text-green-700'
@@ -143,27 +141,35 @@ const Courses: React.FC = () => {
                           {course.type === 'paid'
                             ? `₦${course.price.toLocaleString()}`
                             : 'FREE'}
-                        </div>
+                        </span>
                       </div>
 
-                      <h3 className="text-2xl font-bold font-heading text-punchline-black mb-3 leading-tight group-hover:text-punchline-blue transition-colors">
+                      <h3 className="text-2xl font-bold mb-3">
                         {course.title}
                       </h3>
 
-                      <p className="text-punchline-gray text-sm leading-relaxed mb-6 flex-grow">
+                      <p className="text-sm text-punchline-gray mb-6 flex-grow">
                         {course.description}
                       </p>
 
-                      <button
-                        className={`w-full py-4 rounded-xl font-black transition-all flex items-center justify-center gap-2 ${
-                          course.type === 'free'
-                            ? 'bg-punchline-light text-punchline-black'
-                            : 'bg-punchline-blue text-white shadow-lg'
-                        }`}
-                      >
-                        {course.type === 'free' ? 'Start Learning' : 'Enroll Now'}
-                        <BookOpen size={18} />
-                      </button>
+                      {/* CTA */}
+                      {course.registrationLink && (
+                        <a
+                          href={course.registrationLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`mt-auto w-full py-4 rounded-xl font-black flex items-center justify-center gap-2 transition ${
+                            course.type === 'free'
+                              ? 'bg-punchline-light text-punchline-black'
+                              : 'bg-punchline-blue text-white'
+                          }`}
+                        >
+                          {course.type === 'free'
+                            ? 'Start Learning'
+                            : 'Enroll Now'}
+                          <ExternalLink size={18} />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </FadeIn>
