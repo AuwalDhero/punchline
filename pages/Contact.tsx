@@ -95,7 +95,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Email Us</p>
-                      <p className="text-xl font-bold">Punchlinemarketinghub@gmail.com</p>
+                      <p className="text-xl font-bold">Use the contact form below</p>
                     </div>
                   </div>
 
@@ -202,7 +202,6 @@ const Contact: React.FC = () => {
         </div>
       </section>
 
-      {/* Map Placeholder */}
       <section className="h-[400px] bg-gray-200 flex items-center justify-center text-gray-400">
         <MapPin size={48} />
       </section>
