@@ -4,7 +4,10 @@ export async function handler(event) {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      body: 'Method Not Allowed',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message: 'Method Not Allowed' }),
     };
   }
 
@@ -38,11 +41,17 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ success: true }),
     };
   } catch (error) {
     return {
       statusCode: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ error: error.message }),
     };
   }
