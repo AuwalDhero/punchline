@@ -1,58 +1,84 @@
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
-export async function handler(event) {
+exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'Method Not Allowed' }),
     };
   }
 
+  let data;
   try {
-    const data = JSON.parse(event.body);
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    const mailOptions = {
-      from: `"Punchline Website" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_TO,
-      subject: `📩 New ${data.type || 'Contact'} Submission`,
-      html: `
-        <h2>New Submission</h2>
-        <p><strong>Name:</strong> ${data.name || 'N/A'}</p>
-        <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
-        <p><strong>Company:</strong> ${data.company || 'N/A'}</p>
-        <p><strong>Service:</strong> ${data.service || 'N/A'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${data.message || 'N/A'}</p>
-      `,
+    data = JSON.parse(event.body);
+  } catch (err) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Invalid JSON body' }),
     };
+  }
 
-    await transporter.sendMail(mailOptions);
+  const {
+    type,
+    email,
+    fullName,
+    company,
+    service,
+    message,
+  } = data;
+
+  if (!email) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Email is required' }),
+    };
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  let subject = '';
+  let html = '';
+
+  if (type === 'newsletter') {
+    subject = 'New Newsletter Subscription';
+    html = `<p><strong>Email:</strong> ${email}</p>`;
+  } else {
+    subject = 'New Contact Form Submission';
+    html = `
+      <h2>New Contact Request</h2>
+      <p><strong>Name:</strong> ${fullName || 'N/A'}</p>
+      <p><strong>Company:</strong> ${company || 'N/A'}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Service:</strong> ${service || 'N/A'}</p>
+      <p><strong>Message:</strong></p>
+      <p>${message || 'N/A'}</p>
+    `;
+  }
+
+  try {
+    await transporter.sendMail({
+      from: `"Punchline Website" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject,
+      html,
+    });
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({ success: true }),
     };
   } catch (error) {
+    console.error('Email error:', error);
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({ message: 'Failed to send email' }),
     };
   }
-}
+};
