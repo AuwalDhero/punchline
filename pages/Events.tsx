@@ -60,38 +60,41 @@ const events: PMHEvent[] = Object.entries(eventFiles)
       registrationLink: data.registrationLink,
     };
   })
-  .sort((a, b) =>
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  // Soonest first (upcoming events should appear in chronological order)
+  .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
 /* ---------------------------------------------
    COMPONENT
 --------------------------------------------- */
 const Events: React.FC = () => {
-  const masterclasses = events.filter(
-    event => event.category === 'masterclass'
-  );
+  // Filter only today and future events (runtime check)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingEvents = events.filter(event => {
+    const eventDate = new Date(event.date);
+    return eventDate >= today;
+  });
 
   return (
     <div className="pt-20">
-      {/* MASTERCLASSES */}
+      {/* ALL EVENTS (every category now shows) */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="mb-16">
             <h2 className="text-4xl font-black font-heading text-punchline-black">
-              Recent Masterclasses
+              Upcoming Events
             </h2>
             <div className="h-1.5 w-24 bg-punchline-blue mt-4 rounded-full"></div>
           </div>
 
-          {masterclasses.length === 0 ? (
+          {upcomingEvents.length === 0 ? (
             <div className="text-center py-20 font-bold text-punchline-gray">
-              No masterclasses published yet.
+              No upcoming events at this time.
             </div>
           ) : (
             <div className="grid md:grid-cols-3 gap-8">
-              {masterclasses.map((event, idx) => (
+              {upcomingEvents.map((event, idx) => (
                 <FadeIn key={event.id} delay={idx * 0.1}>
                   <div className="bg-punchline-light p-8 rounded-[2rem] border border-gray-100 flex flex-col h-full">
 
@@ -130,9 +133,7 @@ const Events: React.FC = () => {
                       </div>
 
                       <div className="font-bold text-punchline-black">
-                        {event.access === 'free'
-                          ? 'FREE EVENT'
-                          : `₦${event.price?.toLocaleString()}`}
+                        {event.price ? `₦${event.price.toLocaleString()}` : 'FREE EVENT'}
                       </div>
                     </div>
 
