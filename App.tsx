@@ -16,6 +16,7 @@ import Events from './pages/Events';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Contact from './pages/Contact';
+import Team from './pages/Team';
 import LeadAssistant from './components/LeadAssistant';
 
 const ScrollToTop = () => {
@@ -45,6 +46,7 @@ const App: React.FC = () => {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/team" element={<Team />} />
             {/* Catch-all */}
             <Route path="*" element={<Home />} />
           </Routes>
