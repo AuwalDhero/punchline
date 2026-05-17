@@ -11,6 +11,8 @@ const Home: React.FC = () => {
     { src: '/uploads/fantel-business-school.jpg', alt: 'Fantel Business School' },
     { src: '/uploads/northino.jpg', alt: 'Northino' },
     { src: '/uploads/spark-lab.png', alt: 'Spark Lab Creativity & Innovation Hub' },
+    { src: '/uploads/tba.png', alt: 'Spark Lab Creativity & Innovation Hub' },
+    { src: '/uploads/vogue.png', alt: 'Spark Lab Creativity & Innovation Hub' },
   ];
 
   return (
@@ -31,7 +33,7 @@ const Home: React.FC = () => {
                   <span>Nigeria's Elite Marketing Hub</span>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-black font-heading leading-tight text-punchline-black">
-                  Empowering African <span className="text-punchline-blue">Marketing</span> Excellence
+                We Turn All Your Sales <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
                 </h1>
                 <p className="text-xl text-punchline-gray leading-relaxed max-w-xl">
                   Transformative training, strategic consultancy, and data-driven market research designed for the unique Nigerian business landscape.
@@ -112,7 +114,7 @@ const Home: React.FC = () => {
       {/* Trust Bar – Now loads perfectly with your exact file names & extensions */}
       <section className="bg-white py-20 border-y border-gray-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center mb-10">
-          <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Global Standards, Local Expertise</p>
+          <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Clients & Partners</p>
         </div>
         <div className="flex space-x-48 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
           {[...partners, ...partners].map((partner, i) => (

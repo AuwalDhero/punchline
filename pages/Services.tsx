@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Target } from 'lucide-react';
 import FadeIn from '../components/FadeIn';
-import matter from 'gray-matter';
 import { ICON_MAP } from '../constants';
 
 /* ---------------------------------------------
@@ -13,36 +12,61 @@ export interface Service {
   slug: string;
   title: string;
   description: string;
-  body: string;
   icon: string;
+  features: string[];
 }
 
 /* ---------------------------------------------
-   BUILD-TIME CMS IMPORT (VITE SAFE)
+   HARDCODED SERVICES DATA
 --------------------------------------------- */
-const serviceFiles = import.meta.glob('/content/services/*.md', {
-  eager: true,
-  query: '?raw',
-  import: 'default',
-}) as Record<string, string>;
-
-/* ---------------------------------------------
-   PARSE SERVICES AT BUILD TIME
---------------------------------------------- */
-const services: Service[] = Object.entries(serviceFiles)
-  .map(([path, raw]) => {
-    const { data, content } = matter(raw);
-    const slug = path.split('/').pop()?.replace('.md', '') ?? '';
-
-    return {
-      id: slug,
-      slug,
-      title: data.title ?? '',
-      description: data.description ?? '',
-      body: content ?? '',
-      icon: data.icon ?? '',
-    };
-  });
+const services: Service[] = [
+  {
+    id: 'strategy-consulting',
+    slug: 'strategy-consulting',
+    title: 'Strategy & Consulting',
+    description: 'Drive sustainable growth with data-backed market analysis, target positioning, and integrated sales-marketing funnel optimization tailored for high-impact performance.',
+    icon: 'strategy',
+    features: [
+      'Market research & competitive analysis',
+      'Brand positioning & messaging strategy',
+      'Go-to-market (GTM) strategy',
+      'Marketing & sales funnel design',
+      'Buyer persona development',
+      'Sales and marketing alignment consulting',
+      'Pricing & packaging strategy',
+    ],
+  },
+  {
+    id: 'branding-creative',
+    slug: 'branding-creative',
+    title: 'Branding & Creative',
+    description: 'Craft an unforgettable brand presence through strategic design, captivating copywriting, and exceptional user experiences that resonate deeply with your audience.',
+    icon: 'creative',
+    features: [
+      'Brand identity',
+      'Graphic design',
+      'Copywriting',
+      'Web design & UX/UI',
+      'Rebranding & brand refresh',
+    ],
+  },
+  {
+    id: 'digital-marketing',
+    slug: 'digital-marketing',
+    title: 'Digital Marketing',
+    description: 'Accelerate your customer acquisition across high-intent channels with optimized search visibility, social storytelling, paid media, and automated lifecycle marketing.',
+    icon: 'digital',
+    features: [
+      'Search engine optimisation (SEO)',
+      'Social media marketing',
+      'Email marketing & marketing automation',
+      'Affiliate & partnership marketing',
+      'Influencer marketing',
+      'Blog posts, whitepapers, ebooks, case studies',
+      'Meta ads',
+    ],
+  },
+];
 
 /* ---------------------------------------------
    COMPONENT
@@ -58,7 +82,7 @@ const Services: React.FC = () => {
               Our Services
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Dynamic solutions driven by CMS-managed expertise for African markets.
+              Dynamic solutions driven by expert strategy and execution tailored for your market.
             </p>
           </FadeIn>
         </div>
@@ -120,24 +144,15 @@ const Services: React.FC = () => {
                       {service.description}
                     </p>
 
-                    <div className="prose prose-lg text-punchline-gray">
-                      {service.body}
-                    </div>
-
-                    {/* CONSTANT FEATURES */}
+                    {/* DYNAMIC FEATURES LIST FROM DOCX */}
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        'Data-Driven',
-                        'Localized',
-                        'ROI Focused',
-                        'Strategic',
-                      ].map(item => (
+                      {service.features.map(item => (
                         <li
                           key={item}
-                          className="flex items-center space-x-2 font-bold text-punchline-black"
+                          className="flex items-start space-x-2 font-bold text-punchline-black"
                         >
                           <CheckCircle2
-                            className="text-punchline-blue"
+                            className="text-punchline-blue mt-1 shrink-0"
                             size={20}
                           />
                           <span>{item}</span>

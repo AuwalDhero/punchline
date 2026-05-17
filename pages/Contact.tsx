@@ -95,7 +95,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <p className="text-gray-400 font-bold uppercase text-xs tracking-widest">Email Us</p>
-                      <p className="text-xl font-bold">Use the contact form below</p>
+                      <p className="text-xl font-bold">punchlinemarketinghub@gmail.com</p>
                     </div>
                   </div>
 
