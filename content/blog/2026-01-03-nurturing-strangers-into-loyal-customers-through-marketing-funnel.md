@@ -89,4 +89,4 @@ Some people use the terms “marketing funnel” and “sales funnel” intercha
 In our next article, we'll share with you what a sales funnel entails and how you can incorporate a full-funnel approach in your marketing.
 
 
-At Punchline Marketing Hub, we teach and build these nurturing systems — from practical email sequences to conversion-optimised landing pages and retention playbooks. Reach out via DM or [punchlinemarketinghub@gmail.com](mailto:admin@punchlinemarketinghub.com).
+At Punchline Marketing Hub, we teach and build these nurturing systems — from practical email sequences to conversion-optimised landing pages and retention playbooks. Reach out via DM or [punchlinemarketinghub@gmail.com](mailto:punchlinemarketinghub@gmail.com).
