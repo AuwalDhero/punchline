@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { PMH_LOGO } from '../constants';
 
 const Footer: React.FC = () => {
@@ -51,17 +51,30 @@ const Footer: React.FC = () => {
               Empowering African businesses with practical, data-driven marketing strategies and sales excellence.
             </p>
 
+            {/* Social Links */}
             <div className="flex space-x-4">
-              <a href="#" className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors">
+              <a 
+                href="https://www.linkedin.com/company/punchline-marketing-hub" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors"
+              >
                 <Linkedin size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors">
+              <a 
+                href="https://www.instagram.com/punchlinemarketinghub/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors"
+              >
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors">
+              <a 
+                href="https://www.facebook.com/punchlinemarketinghub" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="p-2 bg-gray-900 rounded-full hover:bg-punchline-blue transition-colors"
+              >
                 <Facebook size={18} />
               </a>
             </div>

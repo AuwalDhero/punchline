@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { ArrowRight, Star, TrendingUp, ChevronRight } from 'lucide-react';
 import FadeIn from '../components/FadeIn';
-import StatsSection from '../components/StatsSection';
 import { ICON_MAP } from '../constants';
 
+// Import local images for the hero section
+import img1 from '../image/img1.jpg';
+import img2 from '../image/img2.jpg';
+
 const Home: React.FC = () => {
+  // Logic for changing images
+  const homeImages = [img1, img2];
+  const [currentImageIdx, setCurrentImageIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIdx((prevIdx) => (prevIdx + 1) % homeImages.length);
+    }, 4000); // changes every 4 seconds
+    return () => clearInterval(timer);
+  }, [homeImages.length]);
+
   const partners = [
     { src: '/uploads/startup-kano.png', alt: 'Startup Kano Center for Innovation Development' },
     { src: '/uploads/fantel-business-school.jpg', alt: 'Fantel Business School' },
@@ -13,6 +28,13 @@ const Home: React.FC = () => {
     { src: '/uploads/spark-lab.png', alt: 'Spark Lab Creativity & Innovation Hub' },
     { src: '/uploads/tba.png', alt: 'Spark Lab Creativity & Innovation Hub' },
     { src: '/uploads/vogue.png', alt: 'Spark Lab Creativity & Innovation Hub' },
+  ];
+
+  // Your requested updated metrics
+  const stats = [
+    { value: '200+', label: 'Business Owners Trained' },
+    { value: '98%', label: 'Client Satisfaction' },
+    { value: '52%', label: 'Revenue Growth' },
   ];
 
   return (
@@ -30,10 +52,10 @@ const Home: React.FC = () => {
               <div className="space-y-8">
                 <div className="inline-flex items-center space-x-2 bg-blue-100 text-punchline-blue px-4 py-2 rounded-full font-bold text-sm tracking-wide uppercase">
                   <Star size={16} fill="currentColor" />
-                  <span>Nigeria's Elite Marketing Hub</span>
+                  <span>Digital Marketing and Advertising Agency</span>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-black font-heading leading-tight text-punchline-black">
-                We Turn All Your Sales <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
+                  We Turn All Your Sales <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
                 </h1>
                 <p className="text-xl text-punchline-gray leading-relaxed max-w-xl">
                   Transformative training, strategic consultancy, and data-driven market research designed for the unique Nigerian business landscape.
@@ -50,7 +72,20 @@ const Home: React.FC = () => {
             </FadeIn>
             <FadeIn direction="left" delay={0.2} className="hidden lg:block relative">
               <div className="relative">
-                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1000" alt="Hero" className="rounded-3xl shadow-2xl relative z-10" />
+                {/* Dynamic Image Container */}
+                <div className="relative z-10 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3] w-full bg-gray-200">
+                  {homeImages.map((imgSrc, idx) => (
+                    <img
+                      key={idx}
+                      src={imgSrc}
+                      alt={`Hero ${idx + 1}`}
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                        idx === currentImageIdx ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    />
+                  ))}
+                </div>
+                {/* Unchanged Market Dynamics Widget */}
                 <div className="absolute -bottom-8 -left-8 bg-white p-8 rounded-2xl shadow-xl z-20 max-w-xs">
                   <div className="flex items-center space-x-3 mb-4">
                     <div className="bg-green-100 p-2 rounded-lg text-green-600"><TrendingUp /></div>
@@ -92,7 +127,35 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <StatsSection />
+      {/* Animated Stats Section (Direct Inline Integration) */}
+      <section className="bg-punchline-blue py-24 text-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center items-center justify-center">
+            {stats.map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{
+                  duration: 0.8,
+                  delay: idx * 0.15,
+                  type: "spring",
+                  stiffness: 70
+                }}
+                className="space-y-2"
+              >
+                <h3 className="text-6xl md:text-7xl font-black font-heading tracking-tight">
+                  {stat.value}
+                </h3>
+                <p className="text-blue-100 font-bold uppercase tracking-widest text-xs md:text-sm">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Static CTA */}
       <section className="py-24 bg-punchline-light border-t border-gray-100">
@@ -111,7 +174,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust Bar – Now loads perfectly with your exact file names & extensions */}
+      {/* Trust Bar */}
       <section className="bg-white py-20 border-y border-gray-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 text-center mb-10">
           <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Clients & Partners</p>

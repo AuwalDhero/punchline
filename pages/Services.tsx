@@ -4,6 +4,11 @@ import { CheckCircle2, Target } from 'lucide-react';
 import FadeIn from '../components/FadeIn';
 import { ICON_MAP } from '../constants';
 
+// Import local service images using their exact folder names
+import strategyImg from '../image/strategyandcosulting.png';
+import brandingImg from '../image/branding.png';
+import digitalImg from '../image/digtialmarketing.png';
+
 /* ---------------------------------------------
    TYPES
 --------------------------------------------- */
@@ -13,6 +18,7 @@ export interface Service {
   title: string;
   description: string;
   icon: string;
+  image: string; 
   features: string[];
 }
 
@@ -26,6 +32,7 @@ const services: Service[] = [
     title: 'Strategy & Consulting',
     description: 'Drive sustainable growth with data-backed market analysis, target positioning, and integrated sales-marketing funnel optimization tailored for high-impact performance.',
     icon: 'strategy',
+    image: strategyImg,
     features: [
       'Market research & competitive analysis',
       'Brand positioning & messaging strategy',
@@ -42,6 +49,7 @@ const services: Service[] = [
     title: 'Branding & Creative',
     description: 'Craft an unforgettable brand presence through strategic design, captivating copywriting, and exceptional user experiences that resonate deeply with your audience.',
     icon: 'creative',
+    image: brandingImg,
     features: [
       'Brand identity',
       'Graphic design',
@@ -56,6 +64,7 @@ const services: Service[] = [
     title: 'Digital Marketing',
     description: 'Accelerate your customer acquisition across high-intent channels with optimized search visibility, social storytelling, paid media, and automated lifecycle marketing.',
     icon: 'digital',
+    image: digitalImg,
     features: [
       'Search engine optimisation (SEO)',
       'Social media marketing',
@@ -109,13 +118,13 @@ const Services: React.FC = () => {
                     direction={idx % 2 === 1 ? 'right' : 'left'}
                     className="lg:w-1/2"
                   >
-                    <div className="relative">
+                    <div className="relative w-full">
                       <img
-                        src={`https://picsum.photos/seed/service-${service.id}/1000/800`}
+                        src={service.image}
                         alt={service.title}
-                        className="rounded-3xl shadow-2xl"
+                        className="rounded-3xl shadow-2xl w-full h-auto object-cover aspect-[5/4]"
                       />
-                      <div className="absolute -bottom-6 -right-6 bg-punchline-blue p-8 rounded-2xl shadow-xl text-white">
+                      <div className="absolute -bottom-6 -right-6 bg-punchline-blue p-8 rounded-2xl shadow-xl text-white hidden sm:block">
                         <div className="text-4xl font-black font-heading mb-1">
                           0{idx + 1}
                         </div>
@@ -144,7 +153,7 @@ const Services: React.FC = () => {
                       {service.description}
                     </p>
 
-                    {/* DYNAMIC FEATURES LIST FROM DOCX */}
+                    {/* FEATURES LIST */}
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {service.features.map(item => (
                         <li

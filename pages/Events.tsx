@@ -158,30 +158,7 @@ const Events: React.FC = () => {
       </section>
 
       {/* CORPORATE SECTION (UNCHANGED) */}
-      <section className="py-24 bg-punchline-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
-          <FadeIn>
-            <div>
-              <h2 className="text-4xl font-black mb-6">Corporate Training</h2>
-              <p className="text-lg text-punchline-gray mb-8">
-                Bespoke programs for Nigerian organizations.
-              </p>
-
-              <button className="bg-punchline-blue text-white px-10 py-4 rounded-full font-black flex items-center gap-2">
-                Request For Your Team <Users size={20} />
-              </button>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.2}>
-            <img
-              src="https://picsum.photos/seed/corp/1000/1000"
-              className="rounded-[3rem]"
-              alt="Corporate Training"
-            />
-          </FadeIn>
-        </div>
-      </section>
+      
     </div>
   );
 };

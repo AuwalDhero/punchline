@@ -56,20 +56,20 @@ const teamMembers: TeamMember[] = [
       'Building powerful digital presences through strategic SEO and conversion-focused website design that attracts and retains customers.',
   },
   {
-    name: 'Aminu Muhammed Bello',
-    role: 'Administrative Manager',
-    image: aminuImg,
-    gradient: 'from-orange-500 to-amber-700',
-    description:
-      'Keeping operations smooth and efficient, ensuring every client engagement is coordinated and delivered with excellence and precision.',
-  },
-  {
     name: 'Daniel Dauda',
     role: 'Sales Training Specialist',
     image: danielImg,
     gradient: 'from-red-500 to-rose-700',
     description:
       'Experienced sales training specialist focused on developing high-performing sales teams, improving customer engagement strategies, and driving sustainable revenue growth through practical training and performance coaching.',
+  },
+  {
+    name: 'Aminu Muhammed Bello',
+    role: 'Administrative Manager',
+    image: aminuImg,
+    gradient: 'from-orange-500 to-amber-700',
+    description:
+      'Keeping operations smooth and efficient, ensuring every client engagement is coordinated and delivered with excellence and precision.',
   },
 ];
 
