@@ -1,26 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, TrendingUp, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, ChevronRight } from 'lucide-react';
 import FadeIn from '../components/FadeIn';
 import { ICON_MAP } from '../constants';
 
-// Import local images for the hero section
-import img1 from '../image/img1.jpg';
-import img2 from '../image/img2.jpg';
-
 const Home: React.FC = () => {
-  // Logic for changing images
-  const homeImages = [img1, img2];
-  const [currentImageIdx, setCurrentImageIdx] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIdx((prevIdx) => (prevIdx + 1) % homeImages.length);
-    }, 4000); // changes every 4 seconds
-    return () => clearInterval(timer);
-  }, [homeImages.length]);
-
   const partners = [
     { src: '/uploads/startup-kano.png', alt: 'Startup Kano Center for Innovation Development' },
     { src: '/uploads/fantel-business-school.jpg', alt: 'Fantel Business School' },
@@ -40,27 +25,32 @@ const Home: React.FC = () => {
   return (
     <div className="pt-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-punchline-light pt-16 pb-32">
+      <section className="relative overflow-hidden bg-punchline-light pt-16 pb-32 min-h-[70vh] flex items-center">
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
           <svg viewBox="0 0 400 400" className="w-full h-full text-punchline-blue fill-current">
             <circle cx="400" cy="0" r="400" />
           </svg>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <FadeIn direction="right">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+          <div className="flex flex-col items-center text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="max-w-[800px] w-full mx-auto"
+            >
               <div className="space-y-8">
                 <div className="inline-flex items-center space-x-2 bg-blue-100 text-punchline-blue px-4 py-2 rounded-full font-bold text-sm tracking-wide uppercase">
                   <Star size={16} fill="currentColor" />
                   <span>Digital Marketing and Advertising Agency</span>
                 </div>
-                <h1 className="text-5xl md:text-7xl font-black font-heading leading-tight text-punchline-black">
+                <h1 className="text-5xl md:text-7xl font-black font-heading leading-tight text-punchline-black text-center">
                   We Turn All Your Sales <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
                 </h1>
-                <p className="text-xl text-punchline-gray leading-relaxed max-w-xl">
+                <p className="text-xl text-punchline-gray leading-relaxed text-center">
                   Transformative training, strategic consultancy, and data-driven market research designed for the unique Nigerian business landscape.
                 </p>
-                <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                   <Link to="/contact" className="bg-punchline-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition-all flex items-center justify-center">
                     Get a Free Audit <ArrowRight className="ml-2" />
                   </Link>
@@ -69,32 +59,7 @@ const Home: React.FC = () => {
                   </Link>
                 </div>
               </div>
-            </FadeIn>
-            <FadeIn direction="left" delay={0.2} className="hidden lg:block relative">
-              <div className="relative">
-                {/* Dynamic Image Container */}
-                <div className="relative z-10 rounded-3xl shadow-2xl overflow-hidden aspect-[4/3] w-full bg-gray-200">
-                  {homeImages.map((imgSrc, idx) => (
-                    <img
-                      key={idx}
-                      src={imgSrc}
-                      alt={`Hero ${idx + 1}`}
-                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                        idx === currentImageIdx ? 'opacity-100' : 'opacity-0'
-                      }`}
-                    />
-                  ))}
-                </div>
-                {/* Unchanged Market Dynamics Widget */}
-                <div className="absolute -bottom-8 -left-8 bg-white p-8 rounded-2xl shadow-xl z-20 max-w-xs">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="bg-green-100 p-2 rounded-lg text-green-600"><TrendingUp /></div>
-                    <span className="font-bold text-punchline-black">Market Dynamics</span>
-                  </div>
-                  <p className="text-sm text-punchline-gray">Our strategies adapt in real-time to the shifting economy.</p>
-                </div>
-              </div>
-            </FadeIn>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -179,13 +144,28 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 text-center mb-10">
           <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Clients & Partners</p>
         </div>
-        <div className="flex space-x-48 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
-          {[...partners, ...partners].map((partner, i) => (
-            <div key={i} className="flex-shrink-0">
+        {/* Desktop: marquee animation */}
+        <div className="hidden sm:block">
+          <div className="flex space-x-48 animate-marquee whitespace-nowrap hover:[animation-play-state:paused]">
+            {[...partners, ...partners].map((partner, i) => (
+              <div key={i} className="flex-shrink-0">
+                <img
+                  src={partner.src}
+                  alt={partner.alt}
+                  className="h-32 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Mobile: wrapped grid layout */}
+        <div className="sm:hidden flex flex-wrap justify-center gap-6 px-4">
+          {partners.map((partner, i) => (
+            <div key={i} className="flex items-center justify-center">
               <img
                 src={partner.src}
                 alt={partner.alt}
-                className="h-32 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-500"
+                className="h-16 w-auto max-w-[120px] object-contain grayscale hover:grayscale-0 transition-all duration-500"
               />
             </div>
           ))}
