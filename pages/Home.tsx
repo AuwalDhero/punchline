@@ -45,7 +45,7 @@ const Home: React.FC = () => {
                   <span>Digital Marketing and Advertising Agency</span>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-black font-heading leading-tight text-punchline-black text-center">
-                  We Turn All Your <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
+                  We Turn All Your Sales <span className="text-punchline-blue">& Marketing</span> Struggles Into Profits
                 </h1>
                 <p className="text-xl text-punchline-gray leading-relaxed text-center">
                   Transformative training, strategic consultancy, and data-driven market research designed for the unique Nigerian business landscape.
